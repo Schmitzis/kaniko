@@ -83,7 +83,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
           context: .
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }}, ${{ env.IMAGE_REPOSITORY }}:${{ steps.kaniko.outputs.release }}
+          tags: ${{ steps.meta.outputs.tags }}, ${{ env.IMAGE_REPOSITORY }}:${{ steps.kaniko.outputs.release }}, ${{ env.IMAGE_REPOSITORY }}:latest
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
             KANIKO_RELEASE=${{ steps.kaniko.outputs.release }}-debug
