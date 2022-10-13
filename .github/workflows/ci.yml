@@ -80,7 +80,7 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}, ${{ github.repository }}:${{ steps.kaniko.outputs.release }}
           labels: ${{ steps.meta.outputs.labels }}
-          build_args: >-
+          build-args: >-
             KANIKO_RELEASE=${{ steps.kaniko.outputs.release }},
             JQ_RELEASE==${{ steps.jq.outputs.release }},
             YQ_RELEASE==${{ steps.yq.outputs.release }},
