@@ -46,12 +46,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: PrepareReg Names
+        run: |
+          echo IMAGE_REPOSITORY=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]') >> $GITHUB_ENV
+          echo IMAGE_TAG=$(echo ${{ github.ref }} | tr '[:upper:]' '[:lower:]' | awk '{split($0,a,"/"); print a[3]}') >> $GITHUB_ENV
+
       - name: Docker meta
         id: meta
         uses: docker/metadata-action@v4
         with:
           images: |
-            ${{ github.repository }}
+            ${{ env.IMAGE_REPOSITORY }}
           tags: |
             type=ref,event=branch
             type=ref,event=pr
@@ -78,7 +83,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
           context: .
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }}, ${{ github.repository }}:${{ steps.kaniko.outputs.release }}
+          tags: ${{ steps.meta.outputs.tags }}, ${{ env.IMAGE_REPOSITORY }}:${{ steps.kaniko.outputs.release }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
             KANIKO_RELEASE=${{ steps.kaniko.outputs.release }}-debug
